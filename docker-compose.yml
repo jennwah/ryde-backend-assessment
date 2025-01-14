@@ -1,0 +1,37 @@
+version: "3.9"
+services:
+  app:
+    container_name: ryde-backend-api
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    environment:
+      X_POSTGRESQL_HOST: "postgres"
+      X_POSTGRESQL_PORT: "5432"
+      X_POSTGRESQL_USER: "root"
+      X_POSTGRESQL_DB_NAME: "ryde_database"
+      X_POSTGRESQL_DB_SCHEMA: "users"
+      X_POSTGRESQL_PASSWORD: "pass"
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./:/app
+    depends_on:
+      postgres:
+        condition: service_healthy
+  postgres:
+    container_name: ryde-backend-database
+    image: postgis/postgis:latest
+    environment:
+      POSTGRES_DB: "ryde_database"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "pass"
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5

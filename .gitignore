@@ -1,0 +1,9 @@
+bin/
+.idea/
+dist/
+postgres-data/
+tmp/
+dist/app
+.DS_Store
+.vscode
+coverage.out
