@@ -1,12 +1,15 @@
 package user
 
 import (
+	"errors"
+
 	"log/slog"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 
 	"github.com/jennwah/ryde-backend-engineer/internal/api/controller"
+	"github.com/jennwah/ryde-backend-engineer/internal/pkg/postgresql"
 	"github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser/model"
 )
 
@@ -39,6 +42,11 @@ func (h Controller) Create(c *gin.Context) {
 		},
 		Description: req.Description,
 	})
+	if errors.Is(err, postgresql.ErrUserAlreadyExist) {
+		c.AbortWithStatusJSON(http.StatusBadRequest, controller.BadRequestErrorResp(err))
+		return
+	}
+
 	if err != nil {
 		h.logger.Error("create user err", slog.Any("error", err))
 		c.AbortWithStatusJSON(http.StatusInternalServerError, controller.InternalServerErrorResp())

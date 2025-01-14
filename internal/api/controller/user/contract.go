@@ -20,3 +20,7 @@ type getUser interface {
 type patchUser interface {
 	Patch(ctx context.Context, user patchusermodel.PatchUser) error
 }
+
+type deleteUser interface {
+	Delete(ctx context.Context, id string) error
+}

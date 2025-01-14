@@ -2,8 +2,6 @@ package repository
 
 import (
 	"context"
-	"database/sql"
-	"errors"
 	"fmt"
 
 	"github.com/jennwah/ryde-backend-engineer/internal/pkg/postgresql"
@@ -30,12 +28,13 @@ func (r *Repository) Patch(ctx context.Context, payload model.PatchUser) error {
 		WHERE id = :id
 	`
 
-	_, err := r.db.NamedExecContext(ctx, query, dbPayload)
+	res, err := r.db.NamedExecContext(ctx, query, dbPayload)
 	if err != nil {
-		if errors.Is(err, sql.ErrNoRows) {
-			return postgresql.ErrNotFound
-		}
 		return fmt.Errorf("update user DB error: %w", err)
+	}
+	row, _ := res.RowsAffected()
+	if row == 0 {
+		return postgresql.ErrNotFound
 	}
 
 	return nil

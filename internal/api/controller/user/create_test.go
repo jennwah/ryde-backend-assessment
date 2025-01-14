@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"errors"
+	"github.com/jennwah/ryde-backend-engineer/internal/pkg/postgresql"
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
@@ -88,6 +89,20 @@ func TestController_Create(t *testing.T) {
 				Longitude:   invalidLongitude,
 			},
 			isUseCaseCalled: false,
+			expectedStatus:  http.StatusBadRequest,
+		},
+		{
+			name: "Create user request - user already exists",
+			request: CreateRequest{
+				Name:        "Test User",
+				DateOfBirth: "1997-12-17",
+				Address:     "Test Address",
+				Latitude:    validLatitude,
+				Longitude:   validLongitude,
+			},
+			isUseCaseCalled: true,
+			createResult:    "",
+			createErr:       postgresql.ErrUserAlreadyExist,
 			expectedStatus:  http.StatusBadRequest,
 		},
 		{

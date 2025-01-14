@@ -45,7 +45,7 @@ func TestController_Patch(t *testing.T) {
 				Longitude:   validLongitude,
 			},
 			isUseCaseCalled: true,
-			expectedStatus:  http.StatusOK,
+			expectedStatus:  http.StatusNoContent,
 		},
 		{
 			name: "Patch user request - invalid date of birth",

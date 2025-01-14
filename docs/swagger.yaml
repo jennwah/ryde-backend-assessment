@@ -104,6 +104,32 @@ paths:
       tags:
       - users
   /users/{id}:
+    delete:
+      description: Delete an existing user record from the database.
+      parameters:
+      - description: User ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+      summary: Delete an existing user
+      tags:
+      - users
     get:
       description: Retrieve an existing user by UUID from database.
       parameters:
@@ -151,8 +177,8 @@ paths:
         required: true
         type: string
       responses:
-        "200":
-          description: OK
+        "204":
+          description: No Content
         "400":
           description: Bad request
           schema:

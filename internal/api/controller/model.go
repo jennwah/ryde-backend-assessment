@@ -25,7 +25,7 @@ func BadRequestErrorResp(err error) ErrorResponseModel {
 
 func NotFoundErrorResp() ErrorResponseModel {
 	return ErrorResponseModel{
-		ErrorCode:    "400",
+		ErrorCode:    "404",
 		ErrorMessage: "Requested entity not found",
 	}
 }

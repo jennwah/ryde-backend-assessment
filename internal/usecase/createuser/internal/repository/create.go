@@ -2,7 +2,11 @@ package repository
 
 import (
 	"context"
+	"errors"
 	"fmt"
+	"github.com/jackc/pgx/v5/pgconn"
+	"github.com/jennwah/ryde-backend-engineer/internal/pkg/postgresql"
+	"strings"
 
 	"github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser/model"
 )
@@ -33,6 +37,13 @@ func (r *Repository) Create(ctx context.Context, user model.User) (string, error
 	defer stmt.Close()
 
 	if err != nil {
+		var e *pgconn.PgError
+		if errors.As(err, &e) &&
+			e.SQLState() == postgresql.ErrUniqueConstraintViolationCode &&
+			strings.Contains(e.Message, "users_name_key") {
+			return "", postgresql.ErrUserAlreadyExist
+		}
+
 		return "", fmt.Errorf("failed execute create user record, err: %w", err)
 	}
 

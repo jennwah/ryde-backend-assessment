@@ -107,6 +107,45 @@ const docTemplate = `{
                     }
                 }
             },
+            "delete": {
+                "description": "Delete an existing user record from the database.",
+                "tags": [
+                    "users"
+                ],
+                "summary": "Delete an existing user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "User ID (UUID)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    }
+                }
+            },
             "patch": {
                 "description": "Update an existing user record in the database.",
                 "consumes": [
@@ -135,8 +174,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK"
+                    "204": {
+                        "description": "No Content"
                     },
                     "400": {
                         "description": "Bad request",

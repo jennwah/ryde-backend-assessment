@@ -2,7 +2,6 @@ package repository
 
 import (
 	"context"
-	"database/sql"
 	"errors"
 	"fmt"
 	"regexp"
@@ -42,7 +41,7 @@ func TestPatch(t *testing.T) {
 			wantErr: nil,
 		},
 		{
-			name: "no rows found (not found)",
+			name: "no rows affected",
 			patchPayload: model.PatchUser{
 				ID:          "missing-uuid",
 				Name:        "Name",
@@ -53,7 +52,7 @@ func TestPatch(t *testing.T) {
 			},
 			mockBehavior: func(mock sqlmock.Sqlmock) {
 				mock.ExpectExec(regexp.QuoteMeta(query)).
-					WillReturnError(sql.ErrNoRows)
+					WillReturnResult(sqlmock.NewResult(0, 0))
 			},
 			wantErr: postgresql.ErrNotFound,
 		},
