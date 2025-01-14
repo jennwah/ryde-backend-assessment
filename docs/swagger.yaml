@@ -33,6 +33,21 @@ definitions:
       id:
         type: string
     type: object
+  user.GetResp:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      description:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      name:
+        type: string
+    type: object
 info:
   contact: {}
 paths:
@@ -64,6 +79,37 @@ paths:
           schema:
             $ref: '#/definitions/controller.ErrorResponseModel'
       summary: Create a new user
+      tags:
+      - users
+  /users/{id}:
+    get:
+      description: Retrieve an existing user by UUID from database.
+      parameters:
+      - description: User ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/user.GetResp'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+      summary: Get user by ID
       tags:
       - users
 swagger: "2.0"

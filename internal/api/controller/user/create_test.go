@@ -19,7 +19,7 @@ import (
 	"github.com/jennwah/ryde-backend-engineer/internal/config"
 )
 
-func TestController_CreateUser(t *testing.T) {
+func TestController_Create(t *testing.T) {
 	var (
 		testUUID         = uuid.NewString()
 		validLongitude   = 152.22

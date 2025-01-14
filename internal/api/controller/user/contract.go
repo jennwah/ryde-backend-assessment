@@ -1,11 +1,17 @@
 package user
 
+// MOCK: make mock_interface FILE_PATH=./internal/api/controller/user/contract.go DESTINATION_FILE=./internal/api/controller/user/mocks/mock.go PACKAGE=mocks
 import (
 	"context"
 
-	userdomain "github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser/model"
+	createusermodel "github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser/model"
+	getusermodel "github.com/jennwah/ryde-backend-engineer/internal/usecase/getuser/model"
 )
 
 type createUser interface {
-	Create(ctx context.Context, user userdomain.User) (string, error)
+	Create(ctx context.Context, user createusermodel.User) (string, error)
+}
+
+type getUser interface {
+	Get(ctx context.Context, id string) (getusermodel.User, error)
 }

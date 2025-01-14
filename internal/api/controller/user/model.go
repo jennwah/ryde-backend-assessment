@@ -16,3 +16,14 @@ type CreateRequest struct {
 type CreateResp struct {
 	ID string `json:"id"`
 }
+
+// GetResp represents the successful response when a user is retrieved.
+// swagger:model GetResp
+type GetResp struct {
+	Name        string  `json:"name"`
+	DateOfBirth string  `json:"date_of_birth"`
+	Address     string  `json:"address"`
+	Description *string `json:"description,omitempty"`
+	Latitude    float64 `json:"latitude"`
+	Longitude   float64 `json:"longitude"`
+}

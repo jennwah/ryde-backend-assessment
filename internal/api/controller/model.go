@@ -22,3 +22,10 @@ func BadRequestErrorResp(err error) ErrorResponseModel {
 		ErrorMessage: fmt.Sprintf("Bad request body: %s", err.Error()),
 	}
 }
+
+func NotFoundErrorResp() ErrorResponseModel {
+	return ErrorResponseModel{
+		ErrorCode:    "400",
+		ErrorMessage: "Requested entity not found",
+	}
+}

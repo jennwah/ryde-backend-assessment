@@ -1,6 +1,7 @@
 package postgresql
 
+import "errors"
+
 var (
-	ErrCheckViolationCode            = "23514"
-	ErrUniqueConstraintViolationCode = "23505"
+	ErrNotFound = errors.New("not found from database")
 )

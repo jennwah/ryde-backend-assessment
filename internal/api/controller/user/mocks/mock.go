@@ -10,6 +10,7 @@ import (
 
 	gomock "github.com/golang/mock/gomock"
 	model "github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser/model"
+	model0 "github.com/jennwah/ryde-backend-engineer/internal/usecase/getuser/model"
 )
 
 // MockcreateUser is a mock of createUser interface.
@@ -48,4 +49,42 @@ func (m *MockcreateUser) Create(ctx context.Context, user model.User) (string, e
 func (mr *MockcreateUserMockRecorder) Create(ctx, user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Create", reflect.TypeOf((*MockcreateUser)(nil).Create), ctx, user)
+}
+
+// MockgetUser is a mock of getUser interface.
+type MockgetUser struct {
+	ctrl     *gomock.Controller
+	recorder *MockgetUserMockRecorder
+}
+
+// MockgetUserMockRecorder is the mock recorder for MockgetUser.
+type MockgetUserMockRecorder struct {
+	mock *MockgetUser
+}
+
+// NewMockgetUser creates a new mock instance.
+func NewMockgetUser(ctrl *gomock.Controller) *MockgetUser {
+	mock := &MockgetUser{ctrl: ctrl}
+	mock.recorder = &MockgetUserMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockgetUser) EXPECT() *MockgetUserMockRecorder {
+	return m.recorder
+}
+
+// Get mocks base method.
+func (m *MockgetUser) Get(ctx context.Context, id string) (model0.User, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Get", ctx, id)
+	ret0, _ := ret[0].(model0.User)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Get indicates an expected call of Get.
+func (mr *MockgetUserMockRecorder) Get(ctx, id interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockgetUser)(nil).Get), ctx, id)
 }
