@@ -11,6 +11,7 @@ import (
 	gomock "github.com/golang/mock/gomock"
 	model "github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser/model"
 	model0 "github.com/jennwah/ryde-backend-engineer/internal/usecase/getuser/model"
+	model1 "github.com/jennwah/ryde-backend-engineer/internal/usecase/patchuser/model"
 )
 
 // MockcreateUser is a mock of createUser interface.
@@ -87,4 +88,41 @@ func (m *MockgetUser) Get(ctx context.Context, id string) (model0.User, error) {
 func (mr *MockgetUserMockRecorder) Get(ctx, id interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Get", reflect.TypeOf((*MockgetUser)(nil).Get), ctx, id)
+}
+
+// MockpatchUser is a mock of patchUser interface.
+type MockpatchUser struct {
+	ctrl     *gomock.Controller
+	recorder *MockpatchUserMockRecorder
+}
+
+// MockpatchUserMockRecorder is the mock recorder for MockpatchUser.
+type MockpatchUserMockRecorder struct {
+	mock *MockpatchUser
+}
+
+// NewMockpatchUser creates a new mock instance.
+func NewMockpatchUser(ctrl *gomock.Controller) *MockpatchUser {
+	mock := &MockpatchUser{ctrl: ctrl}
+	mock.recorder = &MockpatchUserMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockpatchUser) EXPECT() *MockpatchUserMockRecorder {
+	return m.recorder
+}
+
+// Patch mocks base method.
+func (m *MockpatchUser) Patch(ctx context.Context, user model1.PatchUser) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Patch", ctx, user)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Patch indicates an expected call of Patch.
+func (mr *MockpatchUserMockRecorder) Patch(ctx, user interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Patch", reflect.TypeOf((*MockpatchUser)(nil).Patch), ctx, user)
 }

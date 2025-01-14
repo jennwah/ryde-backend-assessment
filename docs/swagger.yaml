@@ -48,6 +48,28 @@ definitions:
       name:
         type: string
     type: object
+  user.PatchRequest:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      description:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      name:
+        minLength: 3
+        type: string
+    required:
+    - address
+    - date_of_birth
+    - latitude
+    - longitude
+    - name
+    type: object
 info:
   contact: {}
 paths:
@@ -110,6 +132,40 @@ paths:
           schema:
             $ref: '#/definitions/controller.ErrorResponseModel'
       summary: Get user by ID
+      tags:
+      - users
+    patch:
+      consumes:
+      - application/json
+      description: Update an existing user record in the database.
+      parameters:
+      - description: Update user payload
+        in: body
+        name: patchRequest
+        required: true
+        schema:
+          $ref: '#/definitions/user.PatchRequest'
+      - description: User ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+      summary: Update an existing user
       tags:
       - users
 swagger: "2.0"

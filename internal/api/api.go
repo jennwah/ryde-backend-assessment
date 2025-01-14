@@ -34,6 +34,7 @@ func (a API) RegisterHandlers(r gin.IRouter) {
 	{
 		userV1ApiGroup.POST("/users", a.userController.Create)
 		userV1ApiGroup.GET("/users/:id", a.userController.GetByID)
+		userV1ApiGroup.PATCH("/users/:id", a.userController.Patch)
 	}
 
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))

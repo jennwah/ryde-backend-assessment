@@ -27,3 +27,14 @@ type GetResp struct {
 	Latitude    float64 `json:"latitude"`
 	Longitude   float64 `json:"longitude"`
 }
+
+// PatchRequest represents the request payload for updating a user.
+// swagger:model PatchRequest
+type PatchRequest struct {
+	Name        string  `json:"name" binding:"required,min=3"`
+	DateOfBirth string  `json:"date_of_birth" binding:"required,datetime=2006-01-02"`
+	Address     string  `json:"address" binding:"required"`
+	Description *string `json:"description,omitempty"`
+	Latitude    float64 `json:"latitude" binding:"required,latitude"`
+	Longitude   float64 `json:"longitude" binding:"required,longitude"`
+}
