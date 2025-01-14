@@ -1,0 +1,69 @@
+definitions:
+  controller.ErrorResponseModel:
+    properties:
+      error_code:
+        type: string
+      error_message:
+        type: string
+    type: object
+  user.CreateRequest:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      description:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      name:
+        minLength: 3
+        type: string
+    required:
+    - address
+    - date_of_birth
+    - latitude
+    - longitude
+    - name
+    type: object
+  user.CreateResp:
+    properties:
+      id:
+        type: string
+    type: object
+info:
+  contact: {}
+paths:
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user record in the database.
+      parameters:
+      - description: Create user payload
+        in: body
+        name: createRequest
+        required: true
+        schema:
+          $ref: '#/definitions/user.CreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.CreateResp'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+      summary: Create a new user
+      tags:
+      - users
+swagger: "2.0"

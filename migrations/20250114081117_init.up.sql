@@ -4,11 +4,11 @@ CREATE EXTENSION IF NOT EXISTS postgis; -- Enable PostGIS extension
 CREATE TABLE IF NOT EXISTS users.users
 (
     id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    name          VARCHAR(255)           NOT NULL,
-    date_of_birth DATE                   NOT NULL,
-    address       TEXT,
+    name          VARCHAR(255) NOT NULL,
+    date_of_birth DATE         NOT NULL,
+    address       TEXT         NOT NULL,
     description   TEXT,
-    location      GEOGRAPHY(POINT, 4326) NOT NULL, -- Stores latitude and longitude in WGS 84
+    location      GEOGRAPHY(POINT, 4326), -- Stores latitude and longitude in WGS 84
     created_at    TIMESTAMP        DEFAULT CURRENT_TIMESTAMP,
     UNIQUE (name)
 );

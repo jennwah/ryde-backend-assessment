@@ -6,10 +6,11 @@ import (
 	"github.com/jmoiron/sqlx"
 
 	"github.com/jennwah/ryde-backend-engineer/internal/config"
+	createuseruc "github.com/jennwah/ryde-backend-engineer/internal/usecase/createuser"
 )
 
 type UseCases struct {
-	HelloUseCase helloWorld
+	CreateUserUseCase createUser
 }
 
 type Controller struct {
@@ -19,9 +20,11 @@ type Controller struct {
 }
 
 func New(db *sqlx.DB, logger *slog.Logger, cfg config.Config) Controller {
+	RegisterUserValidators()
+
 	return Controller{
 		uc: UseCases{
-			HelloUseCase: nil,
+			CreateUserUseCase: createuseruc.Create(db),
 		},
 		logger: logger,
 		cfg:    cfg,

@@ -4,8 +4,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
-	"github.com/jennwah/ryde-backend-engineer/internal/api"
-	"github.com/jennwah/ryde-backend-engineer/internal/pkg/postgresql"
+
 	"log"
 	"log/slog"
 	"net/http"
@@ -16,7 +15,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/jennwah/ryde-backend-engineer/internal/api"
 	"github.com/jennwah/ryde-backend-engineer/internal/config"
+	"github.com/jennwah/ryde-backend-engineer/internal/pkg/postgresql"
 )
 
 func main() {
