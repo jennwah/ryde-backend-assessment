@@ -7,11 +7,18 @@ friendship relation and ability to retrieve nearby friends within a specified ra
 ## Prerequisites
 1. Go (uses `1.23.2` for current repo)
 2. Docker (optional, but it makes bootstrapping easier)
+3. PostgreSQL (optional, only if you do not have docker setup locally)
 
 ## Instructions
 The service is packaged with Docker build and as such, you can simply run `make run` to bring up the API service and our database service together. Once up, access the APIs via http://localhost:8080/api/v1
 
 If you have no docker installed locally, you can still run the service with `go run cmd/service.go`, but you must have `PostgreSQL` installed (either via homebrew or other means) and running locally. 
+
+After getting services up, we can run initial database migrations with `make migrate_up`.
+
+At this point, you can start exploring with the APIs to create users or friendship. We also have `seed` utility for quicker exploration;
+
+Run `make seed_data` to get a few users and friendship inserted into your database.
 
 ## API
 The APIs are designed with Restful principels and documented with swagger tools. Here're the summary of APIs; 
@@ -23,7 +30,7 @@ The APIs are designed with Restful principels and documented with swagger tools.
 5. POST   /api/v1/friends
 6. GET    /api/v1/friends/nearby 
 
-Though, a more detailed API specifications can be viewed locally with the help of swagger tools, simply run `make run` and access via `http://localhost:8080/swagger/index.html`
+Though, a more detailed API specifications can be viewed locally with the help of swagger tools, simply run `make run` (if you haven't started your services) and access via `http://localhost:8080/swagger/index.html`
 
 ## Codebase structure
 I thought it's good to mention about how our codebase structure is setup. It follows Clean Architecture principle, where our service is divided into few core layers;
