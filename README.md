@@ -1,11 +1,11 @@
 # Ryde Backend
 
 ## Overview
-Service is built with Go with efficient, minimalistic web framework <b>Gin</b>. It features user APIs with common CRUD actions, establish users
+Service is built with <b>Go</b> with efficient, minimalistic web framework <b>Gin</b>. It features user APIs with common CRUD actions, establish users
 friendship relation and ability to retrieve nearby friends within a specified radius meter provided.
 
 ## Prerequisites
-1. Go (uses `1.23.2` for current repo)
+1. Go (uses `1.23.2` version for current repo)
 2. Docker (optional, but it makes bootstrapping easier)
 3. PostgreSQL (optional, only if you do not have docker setup locally)
 
@@ -23,31 +23,31 @@ Run `make seed_data` to get a few users and friendship inserted into your databa
 ## API
 The APIs are designed with Restful principels and documented with swagger tools. Here're the summary of APIs; 
 
-1. POST   /api/v1/users            
-2. GET    /api/v1/users/:id
-3. PATCH  /api/v1/users/:id
-4. DELETE /api/v1/users/:id
-5. POST   /api/v1/friends
-6. GET    /api/v1/friends/nearby 
+1. `POST   /api/v1/users`            
+2. `GET    /api/v1/users/:id`
+3. `PATCH  /api/v1/users/:id`
+4. `DELETE /api/v1/users/:id`
+5. `POST   /api/v1/friends`
+6. `GET    /api/v1/friends/nearby` 
 
 Though, a more detailed API specifications can be viewed locally with the help of swagger tools, simply run `make run` (if you haven't started your services) and access via `http://localhost:8080/swagger/index.html`
 
 ## Codebase structure
 I thought it's good to mention about how our codebase structure is setup. It follows Clean Architecture principle, where our service is divided into few core layers;
 
-1. Controller layer
+1. <b>Controller layer</b>
 
 This is mostly your API controllers where it received request first-hand and responsible for common first-hand requests operations like request validation, auth middleware strategy etc. It then pass on its responsibility over to the next year.
 
-2. UseCase layer
+2. <b>UseCase layer</b>
 
 All business logic should reside on this layer for good encapsulation purposes. It should deal with most of every business / application logic to great extent.
 
-3. Repository layer
+3. <b>Repository layer</b>
 
 A layer where service interacts with storage like your SQL / NoSQL databases. It deals with data saving, updating, deletion, retrieval etc making its responsibility clear to maintainers of repository.
 
-4. Others
+4. <b>Others</b>
 
 There're others useful mini packages that maintainers can define, as long as it make sense to have it on codebase. For example, the `pkg` directory hosts all implementation to third-party useful packages like postgresql client, in our case.
 
@@ -65,23 +65,31 @@ As of current writing, total test coverage is 75%.
 Github CI actions are included as checks for two stages;
 
 1. Build stage
+
 Simply build our Go application as an containerized image and ready to be uploaded to any container register or shipped to anywhere, where a container orchestration platform would support; eg `k8s`
+
 2. Test stage
+
 Runs our unit tests with `make test` and output coverage reports.
 
 ## About the challenge (advanced part)
 This service covers the basic requirements of challenge which covers User CRUD operations and other technical details. Specifically on the <b>advanced requirement parts</b>, this service was design to also handle
 
 1. Complete application logging
-We use https://github.com/uber-go/zap logger package with JSON output format to `os.stdout`. As such, it would be compatible with every other Observability tools like ELK, or cloud platform native logs aggregator tools for full observability purposes. Simply collect
+
+We use Go's standard library `log/slog` logger package with JSON output format to `os.stdout`. As such, it would be compatible with every other Observability tools like ELK, or cloud platform native logs aggregator tools for full observability purposes. Simply collect
 the logs from `os.stdout` and developers gain access to application logs tracing. 
+
 2. User friendship feature
+
 This feature is designed with relational join on our `users.friends` table with `user_id` and `friend_id` being the unique pair on table. Only one pair of `(user_id, friend_id)` could exist with the constraint
 `user_id < friend_id` during inserts. This way, we ensure consistent friendship establishment between two users. 
 
 It's good to note that, for a simple requirement like a friendship relation between two users, the current solution could scale reasonably well. However, a proper graph database like `neo4j` would scale better when a more complex
 query like finding mutual friends, advanced graph traversal, friends of friends etc are to be implemented. But based on this assignment, the current solution would be sufficient for simple use cases.
+
 3. Nearby friends feature
+
 Once we have the friends feature, we can now extend on top of it with location (latitude, longtitude) parameters. The design is to use PostgreSQL's Postgis extension, specifically on this geospatial queries support.
 
 Here's our `users` table design; 
