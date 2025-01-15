@@ -4,6 +4,106 @@
         "contact": {}
     },
     "paths": {
+        "/friends": {
+            "post": {
+                "description": "Creates a new user friend pair record in the database.",
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "friends"
+                ],
+                "summary": "Create a new user friend pair",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "name": "user_id",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "Create user friend pair payload",
+                        "name": "createRequest",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/friend.CreateReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    }
+                }
+            }
+        },
+        "/friends/nearby": {
+            "get": {
+                "description": "Retrieve nearby friends from database, within radius meter specified",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "friends"
+                ],
+                "summary": "Get nearby friends with radius meter specified",
+                "parameters": [
+                    {
+                        "type": "number",
+                        "default": 5000,
+                        "description": "Radius in meters (default: 5000)",
+                        "name": "radius_meter",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "User ID (UUID)",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/friend.GetNearbyResp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "schema": {
+                            "$ref": "#/definitions/controller.ErrorResponseModel"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "post": {
                 "description": "Creates a new user record in the database.",
@@ -197,6 +297,57 @@
                 },
                 "error_message": {
                     "type": "string"
+                }
+            }
+        },
+        "friend.CreateReq": {
+            "type": "object",
+            "required": [
+                "friend_id"
+            ],
+            "properties": {
+                "friend_id": {
+                    "type": "string"
+                }
+            }
+        },
+        "friend.Friend": {
+            "type": "object",
+            "properties": {
+                "address": {
+                    "type": "string"
+                },
+                "date_of_birth": {
+                    "type": "string"
+                },
+                "description": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "latitude": {
+                    "type": "number"
+                },
+                "longitude": {
+                    "type": "number"
+                },
+                "name": {
+                    "type": "string"
+                }
+            }
+        },
+        "friend.GetNearbyResp": {
+            "type": "object",
+            "required": [
+                "friends"
+            ],
+            "properties": {
+                "friends": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/friend.Friend"
+                    }
                 }
             }
         },

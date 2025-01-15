@@ -6,6 +6,39 @@ definitions:
       error_message:
         type: string
     type: object
+  friend.CreateReq:
+    properties:
+      friend_id:
+        type: string
+    required:
+    - friend_id
+    type: object
+  friend.Friend:
+    properties:
+      address:
+        type: string
+      date_of_birth:
+        type: string
+      description:
+        type: string
+      id:
+        type: string
+      latitude:
+        type: number
+      longitude:
+        type: number
+      name:
+        type: string
+    type: object
+  friend.GetNearbyResp:
+    properties:
+      friends:
+        items:
+          $ref: '#/definitions/friend.Friend'
+        type: array
+    required:
+    - friends
+    type: object
   user.CreateRequest:
     properties:
       address:
@@ -73,6 +106,72 @@ definitions:
 info:
   contact: {}
 paths:
+  /friends:
+    post:
+      consumes:
+      - application/json
+      description: Creates a new user friend pair record in the database.
+      parameters:
+      - in: header
+        name: user_id
+        required: true
+        type: string
+      - description: Create user friend pair payload
+        in: body
+        name: createRequest
+        required: true
+        schema:
+          $ref: '#/definitions/friend.CreateReq'
+      responses:
+        "201":
+          description: Created
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+      summary: Create a new user friend pair
+      tags:
+      - friends
+  /friends/nearby:
+    get:
+      description: Retrieve nearby friends from database, within radius meter specified
+      parameters:
+      - default: 5000
+        description: 'Radius in meters (default: 5000)'
+        in: query
+        name: radius_meter
+        type: number
+      - description: User ID (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/friend.GetNearbyResp'
+        "400":
+          description: Bad request
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "404":
+          description: Not found
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/controller.ErrorResponseModel'
+      summary: Get nearby friends with radius meter specified
+      tags:
+      - friends
   /users:
     post:
       consumes:
